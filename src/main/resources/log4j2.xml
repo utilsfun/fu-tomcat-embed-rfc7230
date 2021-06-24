@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+    <Properties>
+        <Property name="topic" value="${env:application.name:-${sys:application.name:-${k8s:labels.k8s-app}}}"/>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <JsonTemplateLayout>
+                <EventTemplateAdditionalField key="topic" value="${topic}"/>
+            </JsonTemplateLayout>
+        </Console>
+        <Socket name="LogStash" host="52.131.229.125" port="30045" protocol="TCP">
+            <JsonTemplateLayout>
+                <EventTemplateAdditionalField key="topic" value="${topic:-unknown}"/>
+            </JsonTemplateLayout>
+        </Socket>
+    </Appenders>
+    <Loggers>
+        <AsyncRoot level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogStash"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>
