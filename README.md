@@ -61,17 +61,17 @@ releases目录下有修改后tomcat-embed-core-9.0.41.jar文件，可以下载�
 
 ## 配置
 
-系统变量：tomcat.query.char.convert
 默认值 "*,*,{}[]|,utf-8;"
 表示在所有host,所有uri时，把{}[]|字符转成URLEncode utf-8 字符
 
 手动配置方法
 
-```
- System.setProperty("tomcat.query.char.convert","*,*,{}[]|,utf-8;");
-```
-
-如： "my.com,/test/,{},utf-8"
-表示在访问my.com,uri包含/test/时，把{}字符转成URLEncode utf-8 字符
-
+系统变量：tomcat.query.char.convert
+规则 主机,包含路径,字符,编码;(下一条)
 多个规则用;分开
+
+如：
+```
+ System.setProperty("tomcat.query.char.convert","my.com,/test/,{},gbk;*,*,{}[]|,utf-8;");
+```
+表示在访问my.com,uri包含/test/时，把{}字符转成URLEncode gbk字符,其它情况下把{}[]|字符转成URLEncode utf-8 字符
